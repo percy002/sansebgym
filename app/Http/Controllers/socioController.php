@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Entities\{Socio};
+use App\Entities\{Socio,PagosMembresia};
+use Carbon\Carbon;
 
 class socioController extends Controller
 {
@@ -14,7 +15,28 @@ class socioController extends Controller
      */
     public function listar()
     {
-        return view('socio.listarSocio');
+        // $socios= Socio::all();
+
+        // dd(Carbon::now()->toDateString());
+        //lista de socios Activos por fecha de vencimiento de la membresia
+        // dd('DATEDIFF("2020-12-10","'.Carbon::now()->toDateString().'") as unomas');
+        $socios=Socio::join('pagomembresia', function ($join) {
+            $join->on('socio.idsocio', '=', 'pagomembresia.idsocio')
+                 ->whereDate("fechaFin", '>=', Carbon::now()->format('Y-m-d'));
+        })->select('socio.*', 'pagomembresia.fechaFin',db::raw('DATEDIFF(fechaFin,"'.Carbon::now()->toDateString().'") as caducidad'))
+        ->get();
+
+
+        // foreach ($socios as $socio) {
+        //     # code...
+        //     $fechafin = Carbon::createFromFormat('Y-m-d', $socio->fechaFin);
+
+        //     $caducidad = Carbon::now()->diffInDays($fechafin);
+        //     // $socio->fechaFin=$caducidad;
+        // }
+        
+        // var_dump($socios);
+        return view('socio.listarSocio',compact('socios'));
     }
     public function perfil()
     {
@@ -53,7 +75,7 @@ class socioController extends Controller
         $socio= new Socio($request->input());
         $socio->save();
         
-        return view('socio.listarSocio');
+        return redirect()->route('listarSocio');
     }
 
     /**
@@ -75,12 +97,12 @@ class socioController extends Controller
      */
     public function edit($id)
     {
+        $socio = Socio::find($id);
         //
-        $socio = Alumno::find($id);
         $put=true;
-        $action=route('socio.update',['id'=>$id]);
+        $action=route('socio.update',$id);
+        return view('socio.editarSocio')->with(compact('socio','put','action'));
 
-        return view('socio.actualizar');
     }
 
     /**
@@ -95,15 +117,29 @@ class socioController extends Controller
         //
         // list($rules,$messages)=$this->_rules();
         //  $this->validate($request,$rules,$messages);
+
+        // $update = [
+        //     'dni' => $request->dni, 
+        //     'nombres' => $request->nombres,
+        //     'apellidos' => $request->apellidos,
+        //     'celular' => $request->celular,
+        //     'correo' => $request->correo,
+        //     'genero' => $request->genero,
+        // ];
+        // dd($update);
+        // Socio::where('id',$id)->update($update);
+
+        // Socio::where('id',$id)->update($request->all());
+
         $socio=Socio::find($id);
         $socio->dni=$request->input('dni');
-        $socio->nombres=$request->input('nombre');
+        $socio->nombres=$request->input('nombres');
         $socio->apellidos=$request->input('apellidos');
         $socio->genero=$request->input('genero');
         $socio->celular=$request->input('celular');
         $socio->correo=$request->input('correo');
         $socio->save();
-        return redirect()->route('socio.listar');
+        return redirect()->route('listarSocio');
     }
 
     /**

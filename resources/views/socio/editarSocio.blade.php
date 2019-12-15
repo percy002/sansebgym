@@ -11,11 +11,12 @@
             
             <div class="">
               <form role="form" action="{{$action}}" method="POST" class="form-horizontal style-form">
-                {{ csrf_field() }}
+                @csrf
+                @method('PUT')
                 <div class="form-group has-success">
                   <label class="col-lg-2 control-label">DNI :</label>
                   <div class="col-lg-6">
-                    <input type="text" placeholder="Ejem :45677890" id="dni" name="dni" class="form-control">
+                  <input type="text" placeholder="Ejem :45677890" id="dni" name="dni" class="form-control" value={{$socio['dni']}}>
                     <!-- <p class="help-block">Ejem :45677890</p> -->
                   </div>
                   
@@ -24,28 +25,28 @@
                 <div class="form-group has-success">
                   <label class="col-lg-2 control-label">Nombres:</label>
                   <div class="col-lg-9">
-                    <input type="text" placeholder="Ejem :Juan Julio" id="nombres" name="nombres" class="form-control">
+                    <input type="text" placeholder="Ejem :Juan Julio" id="nombres" name="nombres" class="form-control" value={{$socio['nombres']}}>
                     <!-- <p class="help-block">Ejem :Juan Julio</p> -->
                   </div>
                 </div>
                 <div class="form-group has-success">
                   <label class="col-lg-2 control-label">Apellidos :</label>
                   <div class="col-lg-9">
-                    <input type="text" placeholder="Ejem :Quispe Ramirez" id="apellidos" name="apellidos" class="form-control">
+                    <input type="text" placeholder="Ejem :Quispe Ramirez" id="apellidos" name="apellidos" class="form-control" value={{$socio['apellidos']}}>
                     <!-- <p class="help-block">Ejem :Quispe Ramirez</p> -->
                   </div>
                 </div>
                 <div class="form-group has-success">
                   <label class="col-lg-2 control-label">Celular :</label>
                   <div class="col-lg-6">
-                    <input type="text" placeholder="Ejem :962358541" id="celular" name="celular" class="form-control">
+                    <input type="text" placeholder="Ejem :962358541" id="celular" name="celular" class="form-control" value={{$socio['celular']}}>
                     <!-- <p class="help-block">Ejem :962358541</p> -->
                   </div>
                 </div>
                 <div class="form-group has-success">
                   <label class="col-lg-2 control-label">Email :</label>
                   <div class="col-lg-8">
-                    <input type="email" placeholder="Ejem :juan@hotmail.com" id="correo" name="correo" class="form-control">
+                    <input type="email" placeholder="Ejem :juan@hotmail.com" id="correo" name="correo" class="form-control" value={{$socio['correo']}}>
                     <!-- <p class="help-block">Ejem :juan@hotmail.com</p> -->
                   </div>
                 </div>
@@ -54,18 +55,16 @@
                     <div class="col-lg-4">
                   <select class="form-control" name="genero" id="genero">
                     <option value="masculino">Masculino</option>
-                    <option value="femenino">Fememino</option>
+                    <option value="femenino" {{($socio->genero == 'femenino') ? 'selected' : ''}}>Fememino</option>
                      </select>
                     </div>
-                </div>
+              </div>
                 <div class="form-group">
                   <div class="col-lg-offset-2 col-lg-9">
                     <button type="submit" class="btn btn-success">Agregar</button>
                     <button type="submit" class="btn btn-warning">Modificar</button>
                   </div>
-                  @if (!empty($put))
-                            <input type="hidden" name="_method" value="PUT">
-                        @endif
+                  
                 </div>
                 
               </form>

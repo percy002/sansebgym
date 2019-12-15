@@ -19,10 +19,18 @@
  <link href={{asset("lib/font-awesome/css/font-awesome.css")}} rel="stylesheet" />
  <link rel="stylesheet" type="text/css" href={{asset("css2/zabuto_calendar.css")}}>
  <link rel="stylesheet" type="text/css" href={{asset("lib/gritter/css/jquery.gritter.css")}} />
- <!-- Custom styles for this template -->
+
+ {{-- css tabla --}}
+ <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css"/>
+ <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css"/>
+ 
+  <!-- Custom styles for this template -->
  <link href={{asset("css2/style.css")}} rel="stylesheet">
  <link href={{asset("css2/style-responsive.css")}} rel="stylesheet">
  @yield('link')
+ {{-- js tabla --}}
+ <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+{{--  --}}
  <script src={{asset("lib/chart-master/Chart.js")}}></script>
 
 </head>
@@ -61,6 +69,18 @@
 <!--script for this page-->
 <script src={{asset("lib/sparkline-chart.js")}}></script>
 <script src={{("lib/zabuto_calendar.js")}}></script>
+
+{{-- js tabla --}}
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+
 </body>
 
 </html>
+
+<script type="text/javascript">
+  $(document).ready( function () {
+$('#myTable').DataTable();
+} );
+</script>
